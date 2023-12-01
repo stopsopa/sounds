@@ -46,6 +46,14 @@
         "click/pruiii.wav",
       ];
 
+      function getUrl(path) {
+        if (/github/.test(location.href)) {
+          return `${location.href}${path}`;
+        } else {
+          return `${location.protocol}//${location.host}/${path}`;
+        }
+      }
+
       const sounds = list.map((s) => ({ sound: new SoundsList([s]), url: s }));
 
       const ul = document.querySelector("ul");
@@ -69,18 +77,16 @@
         ul.appendChild(li);
       });
 
-      const fullList = list.map(
-        (l) => `${location.protocol + "//" + location.host + "/"}${l}`
-      );
+      const fullList = list.map(getUrl);
 
       document.querySelector(`pre[data-function="list"]`).innerText =
         fullList.join("\n");
 
       document.querySelector(`pre[data-function="use"]`).innerText = `
-const sounds = new SoundsList(${JSON.stringify(fullList, null, 4)});
-sounds.randomPlay()
-sounds.nextPlay()
-        `;
+      const sounds = new SoundsList(${JSON.stringify(fullList, null, 4)});
+      sounds.randomPlay()
+      sounds.nextPlay()
+              `;
     </script>
   </body>
 </html>
