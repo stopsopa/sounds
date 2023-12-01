@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body > div {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div>
+        <ul></ul>
+      </div>
+      <div>
+        <pre data-function="list"></pre>
+      </div>
+      <div>
+        <pre data-function="use"></pre>
+      </div>
+    </div>
+    <script src="./SoundsList.js"></script>
+    <script>
+      const list = [
+        "win/ES_Kids_Hooray.mp3",
+        "win/biiiii.wav",
+        "win/ES_Children_Voice_Clip_5.mp3",
+        "win/ES_Kids_Boo.mp3",
+        "win/hiya-win.wav",
+        "win/ES_Human_Voice_Clip_165.mp3",
+        "win/gibberish-talk.wav",
+        "win/ES_Kids_Yeah_1.mp3",
+        "win/ES_Human_Voice_Clip_190.mp3",
+        "win/ahooo.wav",
+        "win/animals-win-group.wav",
+        "win/hiya-2259.wav",
+        "click/pop-low.wav",
+        "click/mixkit-electric-pop-2365.wav",
+        "click/QKTA234-pop.mp3",
+        "click/pop-high.wav",
+        "click/index.wav",
+        "click/506288-SBsfi2-Simple_Arcade_Select_002.mp3",
+        "click/pruiii.wav",
+      ];
+
+      const sounds = list.map((s) => ({ sound: new SoundsList([s]), url: s }));
+
+      const ul = document.querySelector("ul");
+
+      sounds.forEach(({ sound, url }) => {
+        console.log(sound, url);
+
+        const li = document.createElement("li");
+
+        const a = document.createElement("a");
+        a.setAttribute("href", url);
+        a.innerText = url;
+
+        const button = document.createElement("button");
+        button.innerText = "play";
+        button.addEventListener("click", () => sound.nextPlay());
+
+        li.appendChild(a);
+        li.appendChild(button);
+
+        ul.appendChild(li);
+      });
+
+      const fullList = list.map(
+        (l) => `${location.protocol + "//" + location.host + "/"}${l}`
+      );
+
+      document.querySelector(`pre[data-function="list"]`).innerText =
+        fullList.join("\n");
+
+      document.querySelector(`pre[data-function="use"]`).innerText = `
+const sounds = new SoundsList(${JSON.stringify(fullList, null, 4)});
+sounds.randomPlay()
+sounds.nextPlay()
+        `;
+    </script>
+  </body>
+</html>
