@@ -79,13 +79,46 @@
 
       const fullList = list.map(getUrl);
 
+      function loadScript(url, callback) {
+        return new Promise((resolve) => {
+          var head = document.head || document.getElementsByTagName("head")[0],
+            script = document.createElement("script");
+          script.type = "text/javascript";
+          script.src = url;
+          script.onload = resolve;
+          head.appendChild(script);
+        });
+      }
+
       document.querySelector(`pre[data-function="list"]`).innerText =
         fullList.join("\n");
 
       document.querySelector(`pre[data-function="use"]`).innerText = `
-      const sounds = new SoundsList(${JSON.stringify(fullList, null, 4)});
-      sounds.randomPlay()
-      sounds.nextPlay()
+
+function getUrl(path) {
+    if (/github/.test(location.href)) {
+        return \`\${location.href}\${path}\`;
+    } else {
+        return \`\${location.protocol}//\${location.host}/\${path}\`;
+    }
+}
+function loadScript(url, callback) {
+    return new Promise((resolve) => {
+        var head = document.head || document.getElementsByTagName("head")[0],
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        script.onload = resolve;
+        head.appendChild(script);
+    });
+}      
+(async function () {
+await loadScript(\`${getUrl(`SoundsList.js`)}\`)
+const sounds = new SoundsList(${JSON.stringify(fullList, null, 4)});
+sounds.randomPlay()
+sounds.nextPlay()
+})()
+
               `;
     </script>
   </body>
