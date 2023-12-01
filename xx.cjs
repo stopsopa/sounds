@@ -34,7 +34,7 @@ EEE
       `,
       description: "Status of all things",
       confirm: false,
-    },    [`cserver`]: {
+    },    [`cerver`]: {
       command: `
 source .env
 cat <<EEE
